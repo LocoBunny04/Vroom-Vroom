@@ -5,6 +5,10 @@ import turtle as trtl
 import os
 from playsound import playsound
 import tkinter.messagebox
+from pynput.keyboard import Key, Listener
+import arcade
+
+
 
 
 wn = trtl.Screen()
@@ -14,6 +18,8 @@ caller = trtl.Turtle()
 st = trtl.Turtle()
 rSt = trtl.Turtle()
 user = trtl.Turtle()
+point = trtl.Turtle()
+direct = Key 
 #score = trtl.Turtle()
 count = 0
 caller_list = ['abrupt stop', 'speed bump','right','left','go']
@@ -21,6 +27,10 @@ caller_txt = []
 #Message ="Abrupt stop = DOWN speed bump = SHIFT right = RIGHT left = LEFT go =UP"
 tkinter.messagebox.showinfo('Directions','Abrupt stop = DOWN speed bump = SHIFT right = RIGHT left = LEFT go =UP')
 
+attempt = 0
+user_txt = []
+def usL():
+    user_txt = 'left'
 
 
 
@@ -47,89 +57,132 @@ go_img = "go_resize.gif"
 wn.addshape(go_img)
 caller_img = "huh_resize.gif"
 wn.addshape(caller_img)
-
+point.ht()
+caller.ht()
 # --- Functions ---
+x = -191
+y = 180
+caller.pu()
+caller.goto(x,y)
+si.pu()
+si.ht()
+si.goto(-120,150)
 
+start_pic = "st_resize.gif"
+wn.addshape(start_pic)
+st.shape(start_pic)
+st.pu()
+st.goto(0,180)
+
+restart_pic = "restart_resized.gif"
+wn.addshape(restart_pic)
+rSt.shape(restart_pic)
+rSt.pu()
+rSt.goto(0,180)
+
+
+user_pic = "plyr_resize.gif"
+wn.addshape(user_pic)
+user.shape(user_pic)
+user.pu()
+user.goto(0,-50)
 
 def startPress(x, y):
     caller.shape(caller_img)
+    user.shape(user_pic)
+    caller.st()
     st.ht()
+    point.st()
     rSt.st()
     #print('playing sound using native player')
-    playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vvvcopy.wav')
+    playsound('vvvcopy.wav')
     wn.delay(10)
-    #playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vDa_AS.wav')
-    #playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vS_sb.wav')
-    #playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vR.wav')
-    #playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vL.wav')
-    #playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vUp_go.wav')
     si.clear()
     callerChoose()
-    
+    # callerSoundOs()
 
 def rStPress(x, y):
     rSt.ht()
     st.st()
     si.clear()
+    caller.shape(caller_img)
+    user.shape(user_pic)
+
+point.pu()
+point.goto(150,180)
+point.write(count, font=("Arial",15))
+
 #    gameMain()
     
 def callerChoose():
     #st.ht()
+    
+    global point
+    global caller_txt
     si.ht()
     caller_txt = rand.choice(caller_list)
     si.write(caller_txt,font=("Arial",15))
-    callerSound()
-    #playSound(caller_txt)
-    wn.delay(10)
+    print(caller_txt)
+    callerSoundOs()
+    whilePoint()
+    #wn.delay(10)
     #si.ht()
     
 def callerSound():
     #caller_pic = "huh_resize.gif"
-    if caller_txt == 'abrupt stop':
+    if caller_txt == caller_list[0]:
         print("Ab")
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vDa_AS.wav')
+        playsound('vDa_AS.wav')
         cAs()
-    elif caller_txt == 'speed bump':
+    elif caller_txt == caller_list[1]:
         print("sb")
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vS_sb.wav')
+        playsound('vS_sb.wav')
         cSb()
-    elif caller_txt == 'right':
+    elif caller_txt == caller_list[2]:
         print("right")
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vR.wav')
+        playsound('vR.wav')
         cR()
-    elif caller_txt == 'left':
+    elif caller_txt == caller_list[3]:
         print("left")
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vL.wav')
+        playsound('vL.wav')
         cL()
-    elif caller_txt == 'go':
+        #vroomVroom_wn.addshape(caller_pic)
+        #caller.shape(caller_pic)
+    elif caller_txt == caller_list[4]:
         print('go')
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vUp_go.wav')
+        playsound('vUp_go.wav')
         cGo()
-    
-def playSound(caller_txt):
-    if caller_txt == [d for d in caller_list if "abrupt stop" in d]:
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vDa_AS.wav')
-        caller == 'as_resize.gif'
-    elif caller_txt == [d for d in caller_list if 'speed bump'in d]:
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vDa_AS.wav')
-        caller == 'vSb_resize.gif'
-    elif caller_list == [d for d in caller_list if 'right' in d]:
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vR.wav')
-        caller == 'right_resize.gif'
-    elif caller_txt == [d for d in caller_list if 'left' in d]:
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vL.wav')
-        caller == 'vL.gif'
-    elif caller_txt == [d for d in caller_list if 'go' in d]:
-        playsound('/Users/khaase/Desktop/AP CS Principles - Haase/Lesson 1.2 Abstraction/1.2.5 Shall we Play a Game/Vroom Vroom/vUp_go')
-        caller == 'go_resize.gif'
 
+def callerSoundOs():
+    global caller_txt
+    print("cSOs")
+    #caller_pic = "huh_resize.gif"
+    if caller_txt == caller_list[0]:
+        print("ab")
+        cAs(),playsound('vDa_AS.wav')
+        
+    elif caller_txt == caller_list[1]:
+        print("sb")
+        cSb(),playsound('vS_sb.wav')
+        
+    elif caller_txt == caller_list[2]:
+        print("r")
+        cR(),playsound('vR.wav')
+        
+    elif caller_txt == caller_list[3]:
+        print("l")
+        cL(),playsound('vL.wav')
+        #vroomVroom_wn.addshape(caller_pic)
+        #caller.shape(caller_pic)
+    elif caller_txt == caller_list[4]:
+        print("g")
+        cGo(),playsound('vUp_go.wav')
 
 def abruptStop():
    user.shape(as_img)
-   caller.shape(as_img)
+   usL()
 def speedBump():
     user.shape(sb_img)
-    caller.shape(sb_img)
 def rightTurn():
     user.shape(r_img)  
 def leftTurn():
@@ -148,36 +201,31 @@ def cGo():
     caller.shape(go_img)
 def gameMain():
     #caller.shapesize(10)
-    x = -191
-    y = 180
-    caller.pu()
-    caller.goto(x,y)
-    si.pu()
-    si.ht()
-    si.goto(-120,150)
-    
-    start_pic = "st_resize.gif"
-    wn.addshape(start_pic)
-    st.shape(start_pic)
-    st.pu()
-    st.goto(0,180)
-    
-    restart_pic = "restart_resized.gif"
-    wn.addshape(restart_pic)
-    rSt.shape(restart_pic)
-    rSt.pu()
-    rSt.goto(0,180)
-
-
-    user_pic = "plyr_resize.gif"
-    wn.addshape(user_pic)
-    user.shape(user_pic)
-    user.pu()
-    user.goto(0,-50)
     callerChoose()
-    callerSound()
+    #callerSoundOs()
 #callerSound()
 
+
+def whilePoint():
+    global count
+    while caller_txt =='left':
+        if user.shape != l_img:
+            count = count - 1
+        else:
+            count +=1
+    while caller_txt =='right':
+        if user.shape != r_img:
+            count = count -1
+        else: count +=1
+    while caller_txt =='abrupt stop':
+        if user.shape != as_img:
+            count = count - 1
+        else: count +=1
+    while caller_txt =='speed bump':
+        if user.shape != sb_img:
+            count = count -1 
+        else: count +=1
+    point.write(count,font=("Arial",15))
 
 gameMain()
 st.onclick(startPress)
